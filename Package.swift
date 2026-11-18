@@ -7,7 +7,8 @@ var products: [Product] = [
 
 var targets: [Target] = [
     .target(name: "LiveryCore"),
-    .testTarget(name: "LiveryCoreTests", dependencies: ["LiveryCore"]),
+    .testTarget(name: "LiveryCoreTests", dependencies: ["LiveryCore"],
+                resources: [.copy("Fixtures")]),
 ]
 
 #if os(macOS)

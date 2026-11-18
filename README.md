@@ -4,8 +4,9 @@ Panel theming shared by Zap, Jetty and Invoque: hex colours, contrast maths, gla
 
 Livery is the single source for the pieces whose behaviour must be identical
 across those apps. Each app keeps its own appearance model, presets, preference
-keys and theme importers; Livery owns the colour grammar, the contrast maths, the
-decoration and material types, and the views that draw the panel surfaces.
+keys and theme file format; Livery owns the colour grammar, the contrast maths,
+the decoration and material types, the reader for each other's theme files, and
+the views that draw the panel surfaces.
 
 ## Consumers
 
@@ -28,6 +29,8 @@ decoration and material types, and the views that draw the panel surfaces.
 - `PanelMaterial`, the panel background material.
 - `GradientAngle`, angle normalisation, adjustment, VoiceOver announcement and
   gradient endpoints.
+- `ThemeSnapshot`, the settings the three apps share, read from a theme file
+  any of them exported. See "Theme files" below.
 
 `LiveryKit` is AppKit and SwiftUI, macOS only, and re-exports `LiveryCore`:
 
@@ -63,6 +66,53 @@ PanelBackground(material: .glassTinted, tint: tint, gradientColor: gradient,
                 gradientAngle: angle, opacity: 0.8, cornerRadius: 16,
                 reduceTransparency: settings.reduceTransparency)
 ```
+
+## Theme files
+
+Zap, Jetty and Invoque each export themes as JSON in their own format, and
+older app versions must keep reading what newer ones write, so the formats
+stay as they are. `ThemeSnapshot(themeData:)` reads any of the three and maps
+it onto one set of fields; an app imports a sibling's theme by filling its own
+preset from the snapshot and its own defaults:
+
+```swift
+if let theme = ThemeSnapshot(themeData: data) {
+    preset.tintHex = theme.tintHex ?? Preferences.Default.tintHex
+    preset.material = theme.material ?? Preferences.Default.material
+    // ...
+}
+```
+
+The format is chosen from keys only one app writes: Invoque's first, then
+Zap's, then Jetty's. A file with none of those but with `material`, `tintHex`
+or `gradientHex` reads as Jetty. Anything else, including JSON that is not an
+object, is not a theme and returns nil.
+
+| `ThemeSnapshot` | Zap | Jetty | Invoque |
+|---|---|---|---|
+| `name` (trimmed) | `name` | `name` | `name` |
+| `material` | `useGradientBackground` (`.gradient`, else `.solid`) | `material` | `material` |
+| `tintHex` | `backgroundColorHex` | `tintHex` | `tintHex` |
+| `gradientHex` | `gradientColorHex` | `gradientHex` | `gradientHex` |
+| `gradientAngle`, `backgroundOpacity`, `cornerRadius` | same names | same names | same names |
+| `highlightHex` | `highlightColorHex` | none | `highlightHex` |
+| `highlightOpacity`, `highlightCornerRadius` | same names | none | same names |
+| `labelHex` | `labelColorHex` | none | `labelHex` |
+| `iconSize` | `iconSize` | `iconSize` | none |
+| `showsLabels` | `showAppName` | `showLabels` | none |
+| `adaptiveAccent` | none | `accentGlow` | `adaptiveAccent` |
+| `decorationStyle`, `decorationPosition`, `decorationOpacity`, `decorationSize`, `crtEnabled`, `crtIntensity` | same names | same names | same names |
+
+Every field is optional and is nil when the file lacks it, holds the wrong JSON
+type, names an unknown material or decoration, or holds a colour the hex grammar
+rejects. Numbers pass through unclamped; each app clamps to its own ranges when
+it applies a theme. Settings only one app has (Zap's `contentPadding`, Jetty's
+dock layout, indicator and widget fields, Invoque's `typeface`) have no shared
+field and keep the importing app's default.
+
+`Tests/LiveryCoreTests/Fixtures` holds a built-in theme exported by each app.
+When an app renames, adds or drops an exported field, update its fixture and
+this table in the same release.
 
 ## Compatibility contracts
 

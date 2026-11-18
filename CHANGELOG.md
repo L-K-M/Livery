@@ -1,6 +1,21 @@
 # Changelog
 
-## Unreleased
+## 0.2.0
+
+- Add `ThemeSnapshot` to `LiveryCore`: one reader for the theme files Zap,
+  Jetty and Invoque export, so each app can import the other two's themes the
+  same way. It recognises the format from keys unique to one app (Invoque's
+  rules, which already read Zap and Jetty files), maps each format's field
+  names onto one set of optional fields, and treats a wrong JSON type, an
+  unknown material or decoration, or an unparseable colour as a missing field
+  instead of failing the import. The apps keep exporting their own formats,
+  so older versions still read new exports. Jetty and Invoque replace their
+  private importers with it, and Zap gains import of Jetty and Invoque
+  themes.
+- Add a built-in theme exported by each app as test fixtures, with
+  conformance tests.
+
+## 0.1.0
 
 - Create the repository.
 - Add the Livery package manifest with the Foundation-only `LiveryCore` product

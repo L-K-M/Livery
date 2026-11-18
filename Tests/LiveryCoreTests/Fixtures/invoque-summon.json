@@ -1,0 +1,21 @@
+{
+  "adaptiveAccent" : true,
+  "backgroundOpacity" : 0.9,
+  "cornerRadius" : 16,
+  "crtEnabled" : false,
+  "crtIntensity" : 0.5,
+  "decorationOpacity" : 1,
+  "decorationPosition" : "topTrailing",
+  "decorationSize" : 10,
+  "decorationStyle" : "none",
+  "gradientAngle" : 30,
+  "gradientHex" : "#2A1F4D",
+  "highlightCornerRadius" : 10,
+  "highlightHex" : "#B18CFF",
+  "highlightOpacity" : 0.4,
+  "labelHex" : "#EDE9FF",
+  "material" : "gradient",
+  "name" : "Summon",
+  "tintHex" : "#17122B",
+  "typeface" : "system"
+}
