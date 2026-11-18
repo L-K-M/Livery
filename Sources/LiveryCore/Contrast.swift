@@ -7,8 +7,8 @@ public enum Contrast {
     /// WCAG 2.2 SC 1.4.3, the minimum contrast ratio for normal text.
     public static let minimumTextRatio = 4.5
 
-    /// WCAG 2.2 SC 1.4.6, the minimum contrast ratio for large text and user
-    /// interface components.
+    /// The minimum contrast ratio for large text (WCAG 2.2 SC 1.4.3) and for
+    /// user interface components and graphics (SC 1.4.11).
     public static let minimumNonTextRatio = 3.0
 
     /// Relative luminance of an sRGB colour whose components are unit-interval.
