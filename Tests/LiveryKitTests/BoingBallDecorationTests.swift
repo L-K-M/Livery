@@ -60,4 +60,10 @@ final class BoingBallDecorationTests: XCTestCase {
         XCTAssertNotNil(smooth)
         XCTAssertNotNil(pixelated)
     }
+
+    func testSphereImageRejectsNonFiniteSizes() {
+        XCTAssertNil(BoingBallDecoration.sphereImage(diameter: .nan, scale: 2, pixelated: false))
+        XCTAssertNil(BoingBallDecoration.sphereImage(diameter: .infinity, scale: 2, pixelated: false))
+        XCTAssertNil(BoingBallDecoration.sphereImage(diameter: 64, scale: .nan, pixelated: false))
+    }
 }

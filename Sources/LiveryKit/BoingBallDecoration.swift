@@ -129,6 +129,9 @@ public struct BoingBallDecoration: View {
             cachedPixelated = image
             return image
         }
+        // A non-finite size (an unscaled measurement before first layout, say)
+        // would trap in `Int(_:)`; draw nothing instead.
+        guard diameter.isFinite, scale.isFinite else { return nil }
         let effectiveScale = max(1, scale)
         let pixelDiameter = max(8, Int((diameter * effectiveScale).rounded()))
         if let cached = cachedSmooth[pixelDiameter] { return cached }

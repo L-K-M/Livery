@@ -12,7 +12,7 @@ decoration and material types, and the views that draw the panel surfaces.
 | App | Product | Uses |
 |---|---|---|
 | Zap | `LiveryKit` | colour helpers, `PanelDecoration`, `CRTScreenOverlay`, `BoingBallDecoration`, `AngleDial`, `VisualEffectBlur`, `AccessibilityDisplaySettings` |
-| Jetty | `LiveryKit` | colour helpers, `PanelDecoration`, `CRTScreenOverlay`, `BoingBallDecoration`, `PanelBackground`, `AngleDial`, `VisualEffectBlur` |
+| Jetty | `LiveryKit` | colour helpers, `PanelDecoration`, `CRTScreenOverlay`, `BoingBallDecoration`, `PanelBackground`, `AngleDial`, `VisualEffectBlur`, `AccessibilityDisplaySettings` |
 | Invoque | `LiveryKit` | colour helpers, `PanelBackground`, `PanelDecoration`, `CRTScreenOverlay`, `BoingBallDecoration`, `VisualEffectBlur`, `AngleDial`, `AccessibilityDisplaySettings` |
 | Top Drawer | `LiveryKit` | the `NSColor`/`Color` hex helpers and `VisualEffectBlur` |
 
@@ -92,8 +92,9 @@ animation, and Liquid Glass stays behind `#if compiler(>=6.2)` and
 
 - Stripe decorations no longer show the band-boundary hairline.
 - The Memphis and Synthwave decoration styles become available.
-- The glass background reacts live to Reduce Transparency while the app runs,
-  and turns into an opaque fill under it instead of keeping a live blur.
+- With Reduce Transparency on, the background turns into an opaque fill
+  (solid and gradient fills included) instead of keeping a blur, and follows
+  the setting live once Jetty observes `AccessibilityDisplaySettings`.
 - The angle dial gains keyboard control (focus ring and arrow keys) and
   VoiceOver increment/decrement at 5° steps.
 
