@@ -107,7 +107,8 @@ final class PanelBackgroundTests: XCTestCase {
         }
         #endif
         let view = host(reduceTransparency: false, fallbackMaterial: .fullScreenUI)
-        let effect = view.subviews.compactMap { $0 as? NSVisualEffectView }.first
+        let effect = firstVisualEffectView(in: view)
+        XCTAssertNotNil(effect, "Expected the blur fallback's NSVisualEffectView")
         XCTAssertEqual(effect?.material, .fullScreenUI)
     }
 
@@ -151,7 +152,17 @@ final class PanelBackgroundTests: XCTestCase {
 
     @MainActor
     private func containsVisualEffectView(_ view: NSView) -> Bool {
-        if view is NSVisualEffectView { return true }
-        return view.subviews.contains(where: containsVisualEffectView)
+        firstVisualEffectView(in: view) != nil
+    }
+
+    /// Searches the whole subtree: `NSHostingView` nests a representable's
+    /// AppKit view inside its own views, so it is not a direct subview.
+    @MainActor
+    private func firstVisualEffectView(in view: NSView) -> NSVisualEffectView? {
+        if let effect = view as? NSVisualEffectView { return effect }
+        for subview in view.subviews {
+            if let effect = firstVisualEffectView(in: subview) { return effect }
+        }
+        return nil
     }
 }
