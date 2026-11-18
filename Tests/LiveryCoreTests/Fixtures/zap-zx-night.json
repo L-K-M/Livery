@@ -1,0 +1,22 @@
+{
+  "backgroundColorHex" : "#0B0B1A",
+  "backgroundOpacity" : 0.7,
+  "contentPadding" : 20,
+  "cornerRadius" : 14,
+  "crtEnabled" : true,
+  "crtIntensity" : 0.5,
+  "decorationOpacity" : 1,
+  "decorationPosition" : "topTrailing",
+  "decorationSize" : 12,
+  "decorationStyle" : "zxSpectrum",
+  "gradientAngle" : 20,
+  "gradientColorHex" : "#1A1140",
+  "highlightColorHex" : "#00AEEF",
+  "highlightCornerRadius" : 12,
+  "highlightOpacity" : 0.85,
+  "iconSize" : 80,
+  "labelColorHex" : "#FFFFFF",
+  "name" : "ZX Night",
+  "showAppName" : true,
+  "useGradientBackground" : true
+}
